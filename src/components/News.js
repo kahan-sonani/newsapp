@@ -15,8 +15,11 @@ export default function News(props) {
         setPage(page + 1);
     }
 
-    const handleDropDownChange = (category) => {
-        setCategory(category)
+    const handleDropDownChange = (cat) => {
+        if (category !== cat) {
+            setArticles([])
+            setCategory(cat)
+        }
     }
 
     const fetchMoreData = () => {
@@ -25,30 +28,33 @@ export default function News(props) {
 
     useEffect(() => {
         setLoading(true)
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=b0d03cf5e4e84271b21d3b89c993ce36&page=${page}&pageSize=${pageSize}${category === 'None' ? '' : `&category=${category}`}`
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=${props.apiKey}&page=${page}&pageSize=${pageSize}${category === 'None' ? '' : `&category=${category}`}`
         fetch(url)
             .then(response => response.json())
             .then(data => {
+                console.log('page')
                 setArticles(articles.concat(data.articles))
                 setN(data.totalResults)
                 setLoading(false)
             })
-    }, [page])
+    }, [page, category])
 
-    useEffect(() => {
-        setLoading(true)
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=b0d03cf5e4e84271b21d3b89c993ce36&page=${page}&pageSize=${pageSize}${category === 'None' ? '' : `&category=${category}`}`
+    // useEffect(() => {
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                setArticles(data.articles)
-                setN(data.totalResults)
-                setLoading(false)
-            })
+    //     setLoading(true)
+    //     let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=${props.apiKey}&page=${page}&pageSize=${pageSize}${category === 'None' ? '' : `&category=${category}`}`
+
+    //     fetch(url)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             console.log('category')
+    //             setArticles(data.articles)
+    //             setN(data.totalResults)
+    //             setLoading(false)
+    //         })
 
 
-    }, [category])
+    // }, [category])
 
     return (
         <div className='container my-5 d-flex flex-column align-items-center'>
@@ -75,13 +81,13 @@ export default function News(props) {
                 <InfiniteScroll
                     dataLength={articles.length}
                     next={fetchMoreData}
-                    hasMore={articles.length !== n}
+                    hasMore={true}
                 ></InfiniteScroll>
-                {articles.map((element) =>
+                {articles.length !== 0 && articles.map((element) =>
                     <NewsItem title={element.title} description={element.description} imageUrl={element.urlToImage} key={element.url} newsUrl={element.url} author={element.author} publishedAt={element.publishedAt} />
                 )}
             </div>
-            {loading && <div className="spinner-border my-4" role="status">
+            {loading && <div className="spinner-border my-3" role="status">
                 <span className="visually-hidden">Loading...</span>
             </div>}
         </div>
