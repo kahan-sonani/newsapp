@@ -9,7 +9,7 @@ export default function News(props) {
     const [articles, setArticles] = useState([])
     const [n, setN] = useState(0)
     const [page, setPage] = useState(1)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const handleNextClick = () => {
         setPage(page + 1);
@@ -31,8 +31,8 @@ export default function News(props) {
             .then(data => {
                 setArticles(articles.concat(data.articles))
                 setN(data.totalResults)
+                setLoading(false)
             })
-        setLoading(false)
     }, [page])
 
     useEffect(() => {
@@ -44,13 +44,14 @@ export default function News(props) {
             .then(data => {
                 setArticles(data.articles)
                 setN(data.totalResults)
+                setLoading(false)
             })
-        setLoading(false)
+
 
     }, [category])
 
     return (
-        <div className='container my-5'>
+        <div className='container my-5 d-flex flex-column align-items-center'>
             <div className="container mb-4 d-flex flex-wrap align-items-center flex-column">
                 <h2 className='text-center'>{`${props.heading}${category === 'None' ? '' : ` - ${category}`}`}</h2>
                 <h6 className='text-muted mb-4'>{`${n} results`}</h6>
@@ -75,17 +76,14 @@ export default function News(props) {
                     dataLength={articles.length}
                     next={fetchMoreData}
                     hasMore={articles.length !== n}
-
                 ></InfiniteScroll>
-
-
-                {loading ? <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div> :
-                    articles.map((element) =>
-                        <NewsItem title={element.title} description={element.description} imageUrl={element.urlToImage} key={element.url} newsUrl={element.url} author={element.author} publishedAt={element.publishedAt} />
-                    )}
+                {articles.map((element) =>
+                    <NewsItem title={element.title} description={element.description} imageUrl={element.urlToImage} key={element.url} newsUrl={element.url} author={element.author} publishedAt={element.publishedAt} />
+                )}
             </div>
+            {loading && <div className="spinner-border my-4" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>}
         </div>
     )
 }
