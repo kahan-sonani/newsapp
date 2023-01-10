@@ -25,7 +25,7 @@ export default function News(props) {
 
     useEffect(() => {
         setLoading(true)
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=a48d8d8ce4d541958ddc511a0b33ef65&page=${page}&pageSize=${pageSize}${category === 'None' ? '' : `&category=${category}`}`
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=b0d03cf5e4e84271b21d3b89c993ce36&page=${page}&pageSize=${pageSize}${category === 'None' ? '' : `&category=${category}`}`
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -37,7 +37,7 @@ export default function News(props) {
 
     useEffect(() => {
         setLoading(true)
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=a48d8d8ce4d541958ddc511a0b33ef65&page=${page}&pageSize=${pageSize}${category === 'None' ? '' : `&category=${category}`}`
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=b0d03cf5e4e84271b21d3b89c993ce36&page=${page}&pageSize=${pageSize}${category === 'None' ? '' : `&category=${category}`}`
 
         fetch(url)
             .then(response => response.json())
