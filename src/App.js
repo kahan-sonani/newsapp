@@ -16,7 +16,7 @@ export default function App() {
     <div className='App'>
       <Navbar onQuery={onQuerySearch} apiKey={apiKey}></Navbar>
       <div className='news-container'>
-        <News heading="Top Headlines" apiKey={apiKey} query={query} />
+        <News heading="Top Headlines" apiKey={apiKey} />
       </div>
     </div>
   )

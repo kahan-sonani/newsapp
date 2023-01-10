@@ -11,50 +11,29 @@ export default function News(props) {
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(true)
 
-    const handleNextClick = () => {
-        setPage(page + 1);
-    }
-
     const handleDropDownChange = (cat) => {
-        if (category !== cat) {
-            setArticles([])
-            setCategory(cat)
+        if (cat !== category) {
+            setArticles([]);
+            setCategory(cat);
+
         }
     }
 
     const fetchMoreData = () => {
-        handleNextClick()
+        setPage(page + 1)
     }
 
     useEffect(() => {
         setLoading(true)
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=${props.apiKey}&page=${page}&pageSize=${pageSize}${category === 'None' ? '' : `&category=${category}`}`
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=${props.apiKey}&page=${page}&pageSize=${pageSize}${category === 'General' ? '' : `&category=${category}`}`
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log('page')
                 setArticles(articles.concat(data.articles))
                 setN(data.totalResults)
                 setLoading(false)
             })
     }, [page, category])
-
-    // useEffect(() => {
-
-    //     setLoading(true)
-    //     let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=${props.apiKey}&page=${page}&pageSize=${pageSize}${category === 'None' ? '' : `&category=${category}`}`
-
-    //     fetch(url)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log('category')
-    //             setArticles(data.articles)
-    //             setN(data.totalResults)
-    //             setLoading(false)
-    //         })
-
-
-    // }, [category])
 
     return (
         <div className='container my-5 d-flex flex-column align-items-center'>
@@ -81,9 +60,9 @@ export default function News(props) {
                 <InfiniteScroll
                     dataLength={articles.length}
                     next={fetchMoreData}
-                    hasMore={true}
+                    hasMore={articles.length <= n}
                 ></InfiniteScroll>
-                {articles.length !== 0 && articles.map((element) =>
+                {articles.map((element) =>
                     <NewsItem title={element.title} description={element.description} imageUrl={element.urlToImage} key={element.url} newsUrl={element.url} author={element.author} publishedAt={element.publishedAt} />
                 )}
             </div>
