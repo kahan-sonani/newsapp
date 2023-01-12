@@ -14,7 +14,7 @@ export default function App() {
   }
   return (
     <div className='App'>
-      <Navbar onQuery={onQuerySearch} apiKey={apiKey}></Navbar>
+      {/* <Navbar onQuery={onQuerySearch} apiKey={apiKey}></Navbar> */}
       <div className='news-container'>
         <News heading="Top Headlines" apiKey={apiKey} />
       </div>
